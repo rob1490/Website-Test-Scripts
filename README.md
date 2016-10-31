@@ -10,3 +10,8 @@ The CURL script works by sending a POST request to the URL with the credential l
 
 # Selenium Script
 The Selenium script uses Selenium to automate the inputting of characters directly in the website. The script can be adjusted to have a varying length of time in between the characters. The script will print a SUCCESS if the credentials were able to log into the website, and a FAILURE if the credentials did not work, or if there was something preventing the credentials from working.
+
+# Registration Scripts
+The create account scripts function similarly to the login scripts created in the master branch. However, they attempt to register accounts with a list of credentials. This can be helpful with bot detection as bot could potentially try and see if credentials have been used before to make an account on a website.
+
+These particular scripts attempt to register an account by using a First Name, Last Name, Date of Birth, and a Social Security Number that are listed in that order in a separate text document.
