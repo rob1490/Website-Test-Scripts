@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#Author: Robert
+#Version: 1.0
+
+UAarray=('User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E238 Safari/601.1' 'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36' 'User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36' 'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko' 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13D15 Safari/601.1');
+
+i=0
+
+while IFS='' read -r line || [[ -n "$line" ]]; do
+    userInfo=(${line//:/ })
+    echo "${userInfo[0]}, ${userInfo[1]}, ${userInfo[2]}, ${userInfo[3]}, ${userInfo[4]}"
+
+    result=`curl -s -X POST '***WEBSITE REGISTRATION URL***' -H "${UAarray[$(($i % 5))]}" -H 'Cookie: liveagent_oref=; liveagent_ptid=314ed78a-d51a-48f2-a356-4de665f4b89d; _soa_session_id=34740f11-6a54-4a93-9ffd-a0b4273dc611; ***COOKIE KEY***==; f5avrbbbbbbbbbbbbbbbb=LLFKAFDDJEGCKANOEBLAMCCCJJLBPOHINEHHJIFHEGADPHKBBGKGBKMMAKDAEHKELGIOGGIFCAANANLNKEDNIALGOGFNEMGFBCFKLKBLAELALFLDDBMELIBODOKIFFEG; liveagent_sid=235c2fd2-32fd-45bf-8792-ba7a3ac55e67; liveagent_vc=24' -H 'Origin: ***WEBSITE URL***' -H 'Accept-Encoding: gzip, deflate, br' -H 'X-CSRF-Token: jj0wg8tN0akd0HJUvVK69bttVu6Ef1P7hsLS1OjzTGnqh7om6m+xkGhH2e2DY/lSnWL6SF4YMEXYGCf63dxgeQ==' -H 'Accept-Language: en-US,en;q=0.8' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Cache-Control: no-cache' -H 'Referer: ***WEBSITE REGISTRATION URL***' -H 'DNT: 1' --data "one_reg_params=%7B%22firstName%22%3A%22${userInfo[1]}%22%2C%22lastName%22%3A%22${userInfo[2]}%22%2C%22dateOfBirth%22%3A%22${userInfo[4]}%22%2C%22universalIdentifierValue%22%3A%22${userInfo[3]}%22%2C%22universalIdentifierType%22%3A%22six_digit_ssn%22%2C%22password%22%3A%22asdfasdf*%22%2C%22email%22%3A%22${userInfo[0]}%22%2C%22isEmployee%22%3Anull%2C%22employerId%22%3Anull%2C%22employerKey%22%3Anull%2C%22zipCode%22%3A%2294041%22%2C%22enteredFrom%22%3A%22direct%22%2C%22ignoreLaunchDate%22%3Afalse%2C%22product%22%3A%22ventana%22%7D&employer_key=&ignore_launch_date=false" --compressed`
+
+    i=$(($i+1))
+
+    echo $result
+    if [[ $result == *'"code":"error"'* ]]    
+    then
+        echo "Result: FAIL, Email Used: ${userInfo[0]}"
+    else
+        echo "Result: SUCCESS, Email Used: ${userInfo[0]}"
+    fi
+done < "$1"
